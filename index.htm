@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infográfico: Análise de Clima SEGER/ES</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F9FA;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .text-navy { color: #03045E; }
+        .text-blue { color: #0077B6; }
+        .text-orange { color: #F35B04; }
+        .text-gold { color: #F7B801; }
+        .bg-light-blue { background-color: #CAF0F8; }
+        .bg-navy { background-color: #03045E; }
+        .bg-blue { background-color: #0077B6; }
+        .bg-orange { background-color: #F35B04; }
+        .bg-gold { background-color: #F7B801; }
+
+        .stat-card h3 {
+            font-size: 4rem;
+            font-weight: 900;
+            line-height: 1;
+        }
+        .flowchart-step {
+            border: 2px solid #0077B6;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            background-color: white;
+            flex-grow: 1;
+        }
+        .flowchart-arrow {
+            font-size: 2rem;
+            color: #0077B6;
+            align-self: center;
+        }
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+        .section-subtitle {
+            font-size: 1.25rem;
+            max-width: 800px;
+            margin: 0 auto 2rem auto;
+            color: #4A5568;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <header class="bg-navy text-white text-center py-12 px-4">
+        <h1 class="text-4xl md:text-5xl font-black uppercase tracking-wide">Sua Voz Importa</h1>
+        <p class="text-xl md:text-2xl mt-2 text-light-blue">Raio-X do Clima Organizacional na SEGER/ES</p>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section id="demographics" class="my-16 text-center">
+            <h2 class="section-title text-navy">Quem Somos? O Perfil de Quem Respondeu</h2>
+            <p class="section-subtitle">
+                Para entender os resultados, primeiro precisamos conhecer as pessoas por trás das respostas. Esta seção mostra a composição demográfica dos 101 participantes, fornecendo o contexto essencial para a análise do clima organizacional.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 items-center">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="font-bold text-xl mb-4 text-navy">Distribuição por Gênero</h3>
+                    <div class="chart-container mx-auto max-w-sm">
+                        <canvas id="genderChart"></canvas>
+                    </div>
+                    <p class="mt-4 text-sm text-gray-600">A amostra é predominantemente feminina (67,3%), um fator relevante para a interpretação de questões ligadas à equidade e ambiente de trabalho.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="font-bold text-xl mb-4 text-navy">Distribuição por Faixa Etária</h3>
+                    <div class="chart-container">
+                        <canvas id="ageChart"></canvas>
+                    </div>
+                     <p class="mt-4 text-sm text-gray-600">A maioria dos respondentes (60%) está nas faixas de 35 a 54 anos, indicando uma força de trabalho experiente e em fases consolidadas da carreira.</p>
+                </div>
+                 <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="font-bold text-xl mb-4 text-navy">Tipo de Vínculo</h3>
+                    <div class="chart-container mx-auto max-w-sm">
+                        <canvas id="bondChart"></canvas>
+                    </div>
+                     <p class="mt-4 text-sm text-gray-600">Servidores efetivos compõem a maior parte da amostra (60,4%), mas há uma diversidade de vínculos que pode influenciar a percepção de segurança e pertencimento.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="font-bold text-xl mb-4 text-navy">Ocupantes de Cargo de Chefia</h3>
+                     <div class="flex justify-center items-center h-full min-h-[300px]">
+                        <div class="text-center">
+                            <span class="text-6xl text-blue">👥</span>
+                            <p class="text-5xl font-black text-navy mt-2">76%</p>
+                            <p class="text-xl font-bold text-gray-700 mt-1">Não exercem cargo de chefia</p>
+                            <p class="mt-4 text-sm text-gray-600">A pesquisa reflete primariamente a perspectiva da equipe, um ponto de vista crucial para a gestão entender o dia a dia da organização.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="strengths" class="my-16 text-center bg-light-blue py-12 px-4 rounded-lg">
+            <h2 class="section-title text-navy">Nossos Pontos Fortes: A Força da Colaboração</h2>
+            <p class="section-subtitle">
+                A pesquisa revela uma base cultural sólida, construída sobre o respeito e o apoio mútuo. As equipes na SEGER demonstram uma forte capacidade de colaboração, que é um ativo valioso para a organização.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="stat-card bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-blue">95%</h3>
+                    <p class="text-lg font-bold mt-2 text-navy">Sentem-se à vontade para propor novas ideias e fazer perguntas.</p>
+                    <p class="mt-2 text-sm text-gray-600">Indica um ambiente psicologicamente seguro para a inovação no nível da equipe.</p>
+                </div>
+                <div class="stat-card bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-blue">89%</h3>
+                    <p class="text-lg font-bold mt-2 text-navy">Sentem-se confortáveis para pedir ajuda aos colegas.</p>
+                    <p class="mt-2 text-sm text-gray-600">Reflete uma cultura de suporte e interdependência, essencial para a resolução de problemas.</p>
+                </div>
+                <div class="stat-card bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-blue">92%</h3>
+                    <p class="text-lg font-bold mt-2 text-navy">Percebem um ambiente de respeito e cortesia na equipe.</p>
+                    <p class="mt-2 text-sm text-gray-600">Relações interpessoais positivas são a base para um clima organizacional saudável.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="challenges" class="my-16 text-center">
+            <h2 class="section-title text-orange">Áreas de Atenção: Onde Podemos Melhorar</h2>
+            <p class="section-subtitle">
+                Apesar dos pontos fortes, a pesquisa aponta desafios sistêmicos que precisam de atenção. Abordar essas questões é crucial para o bem-estar dos colaboradores e para o sucesso contínuo da organização.
+            </p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="font-bold text-xl mb-4 text-navy">A Cultura de Feedback é uma Fragilidade</h3>
+                    <div class="chart-container">
+                        <canvas id="feedbackChart"></canvas>
+                    </div>
+                    <p class="mt-4 text-sm text-gray-600">Apenas 38% concordam totalmente que há cultura de feedback. A falta de canais estruturados para conversas construtivas pode impedir o desenvolvimento profissional e a correção de rotas.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="font-bold text-xl mb-4 text-navy">O Medo de Errar Ainda Persiste</h3>
+                     <div class="chart-container">
+                        <canvas id="mistakeChart"></canvas>
+                    </div>
+                    <p class="mt-4 text-sm text-gray-600">Embora a maioria não acredite que o erro será usado contra si, 11% ainda concordam com essa afirmação. Esse receio, mesmo minoritário, pode inibir a inovação e a tomada de riscos.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <h3 class="font-bold text-xl mb-4 text-navy">Saúde Mental: Um Ponto Crítico de Apoio</h3>
+                    <div class="chart-container mx-auto max-w-sm">
+                        <canvas id="mentalHealthChart"></canvas>
+                    </div>
+                     <p class="mt-4 text-sm text-gray-600">Quase 10% dos respondentes sentem que sua saúde mental não é considerada ou apoiada. Comentários qualitativos pedem mais diálogo e ações consistentes da gestão.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <h3 class="font-bold text-xl mb-2 text-navy">Assédio: Uma Realidade Inaceitável</h3>
+                    <div class="flex flex-col justify-center items-center h-full min-h-[350px]">
+                        <p class="text-7xl font-black text-orange">1 em 3</p>
+                        <p class="text-xl font-bold text-gray-700 mt-2">Já presenciou ou sofreu assédio no ambiente de trabalho.</p>
+                        <p class="mt-4 text-sm text-gray-600">Este é o dado mais alarmante da pesquisa. 34.6% de exposição ao assédio revela uma falha grave na segurança psicológica que demanda ação imediata e contundente.</p>
+                     </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 lg:col-span-2">
+                    <h3 class="font-bold text-xl mb-4 text-navy text-center">A Lacuna no Treinamento Contra Assédio</h3>
+                    <div class="chart-container" style="height: 300px; max-height: 350px;">
+                        <canvas id="harassmentTrainingChart"></canvas>
+                    </div>
+                    <p class="mt-4 text-sm text-gray-600 text-center">24% dos colaboradores NUNCA receberam treinamento sobre o tema, e outros 39% o receberam raramente. A falta de conhecimento sobre como identificar e denunciar o assédio é uma barreira crítica para a prevenção.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="recommendations" class="my-16 text-center">
+             <h2 class="section-title text-blue">Plano de Ação: Transformando Dados em Melhorias</h2>
+             <p class="section-subtitle">
+                Com base nos dados, propomos um plano de ação focado em quatro pilares estratégicos para fortalecer a cultura organizacional da SEGER/ES.
+            </p>
+             <div class="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-0">
+                <div class="flowchart-step">
+                    <p class="text-2xl mb-2">💡</p>
+                    <h4 class="font-bold text-lg text-navy">Cultura de Feedback</h4>
+                    <p class="text-sm">Implementar treinamentos e canais formais para dar e receber feedback construtivo.</p>
+                </div>
+                <div class="flowchart-arrow px-4 hidden md:block">→</div>
+                <div class="flowchart-arrow py-2 block md:hidden">↓</div>
+                <div class="flowchart-step">
+                    <p class="text-2xl mb-2">❤️</p>
+                    <h4 class="font-bold text-lg text-navy">Saúde Mental</h4>
+                    <p class="text-sm">Criar um programa de apoio com diálogos frequentes, recursos e capacitação da liderança.</p>
+                </div>
+                <div class="flowchart-arrow px-4 hidden md:block">→</div>
+                 <div class="flowchart-arrow py-2 block md:hidden">↓</div>
+                <div class="flowchart-step">
+                    <p class="text-2xl mb-2">🛡️</p>
+                    <h4 class="font-bold text-lg text-navy">Combate ao Assédio</h4>
+                    <p class="text-sm">Realizar treinamentos obrigatórios e revisar os mecanismos de denúncia para garantir eficácia e confiança.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="text-center p-6 bg-gray-200 text-gray-600 text-sm">
+        <p>Infográfico gerado a partir da análise de dados da pesquisa de clima "Sua Voz Importa" - SEGER/ES.</p>
+        <p>Análise e design realizados em Junho de 2025.</p>
+    </footer>
+
+    <script>
+        const FONT_COLOR = '#03045E';
+        const BORDER_COLOR = 'rgba(3, 4, 94, 0.1)';
+        const PALETTE = {
+            blue: '#0077B6',
+            gold: '#F7B801',
+            orange: '#F35B04',
+            lightBlue: '#CAF0F8',
+            red: '#D00000',
+            green: '#52B69A',
+            gray: '#ADB5BD'
+        };
+
+        function wrapLabel(str, maxWidth) {
+            if (typeof str !== 'string' || str.length <= maxWidth) {
+                return str;
+            }
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+
+            for (let i = 1; i < words.length; i++) {
+                if (currentLine.length + words[i].length + 1 < maxWidth) {
+                    currentLine += ' ' + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            } else {
+                return label;
+            }
+        };
+
+        const chartDefaultOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: FONT_COLOR,
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    ticks: { color: FONT_COLOR },
+                    grid: { color: BORDER_COLOR }
+                },
+                x: {
+                    ticks: { color: FONT_COLOR },
+                    grid: { display: false }
+                }
+            }
+        };
+        
+        const chartPieOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        color: FONT_COLOR,
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    }
+                }
+            }
+        };
+
+
+        new Chart(document.getElementById('genderChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Feminino', 'Masculino', 'Prefiro não dizer', 'Outro'],
+                datasets: [{
+                    label: 'Gênero',
+                    data: [68, 30, 2, 1],
+                    backgroundColor: [PALETTE.blue, PALETTE.orange, PALETTE.gray, PALETTE.gold],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 2
+                }]
+            },
+            options: chartPieOptions
+        });
+
+        new Chart(document.getElementById('ageChart'), {
+            type: 'bar',
+            data: {
+                labels: ['18 a 24', '25 a 34', '35 a 44', '45 a 54', '55 a 64'],
+                datasets: [{
+                    label: 'Nº de Respondentes',
+                    data: [6, 21, 31, 29, 12],
+                    backgroundColor: [PALETTE.lightBlue, PALETTE.gold, PALETTE.orange, PALETTE.blue, PALETTE.navy],
+                    borderColor: FONT_COLOR,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                ...chartDefaultOptions,
+                plugins: { ...chartDefaultOptions.plugins, legend: { display: false } }
+            }
+        });
+
+        new Chart(document.getElementById('bondChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Efetivo', wrapLabel('Contrato Temporário; Terceirizado', 16), 'Comissionado', 'Outros'],
+                datasets: [{
+                    label: 'Vínculo',
+                    data: [61, 16, 14, 6],
+                     backgroundColor: [PALETTE.blue, PALETTE.orange, PALETTE.gold, PALETTE.gray],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 2
+                }]
+            },
+            options: chartPieOptions
+        });
+
+        new Chart(document.getElementById('feedbackChart'), {
+            type: 'bar',
+            data: {
+                labels: ['No meu trabalho há cultura de feedback?'],
+                datasets: [
+                    {
+                        label: 'Concordo Totalmente',
+                        data: [38],
+                        backgroundColor: PALETTE.green,
+                    },
+                    {
+                        label: 'Concordo',
+                        data: [35],
+                        backgroundColor: PALETTE.blue,
+                    },
+                    {
+                        label: 'Não estou decidido',
+                        data: [7],
+                        backgroundColor: PALETTE.gray,
+                    },
+                    {
+                        label: 'Discordo',
+                        data: [14],
+                        backgroundColor: PALETTE.orange,
+                    },
+                    {
+                        label: 'Discordo Totalmente',
+                        data: [7],
+                        backgroundColor: PALETTE.red,
+                    }
+                ]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { stacked: true, ticks: { color: FONT_COLOR } },
+                    y: { stacked: true, ticks: { display: false } }
+                },
+                 plugins: {
+                    legend: { position: 'bottom', labels: {color: FONT_COLOR} },
+                    tooltip: { callbacks: { title: tooltipTitleCallback } }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('mistakeChart'), {
+            type: 'bar',
+            data: {
+                labels: [wrapLabel('Acredito que, se eu cometer um erro, ele será usado contra mim?', 20)],
+                datasets: [
+                    {
+                        label: 'Discordo Totalmente',
+                        data: [55],
+                        backgroundColor: PALETTE.green,
+                    },
+                    {
+                        label: 'Discordo',
+                        data: [24],
+                        backgroundColor: PALETTE.blue,
+                    },
+                     {
+                        label: 'Não estou decidido',
+                        data: [11],
+                        backgroundColor: PALETTE.gray,
+                    },
+                    {
+                        label: 'Concordo',
+                        data: [10],
+                        backgroundColor: PALETTE.orange,
+                    },
+                    {
+                        label: 'Concordo Totalmente',
+                        data: [1],
+                        backgroundColor: PALETTE.red,
+                    }
+                ]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { stacked: true, ticks: { color: FONT_COLOR } },
+                    y: { stacked: true, ticks: { display: false } }
+                },
+                 plugins: {
+                    legend: { position: 'bottom', labels: {color: FONT_COLOR} },
+                    tooltip: { callbacks: { title: tooltipTitleCallback } }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('mentalHealthChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Sim, é apoiada', 'Não é apoiada', 'Indeciso'],
+                datasets: [{
+                    data: [91, 8, 2],
+                    backgroundColor: [PALETTE.green, PALETTE.red, PALETTE.gray],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 2
+                }]
+            },
+            options: { ...chartPieOptions, plugins: {...chartPieOptions.plugins, legend: { position: 'bottom' } } }
+        });
+
+        new Chart(document.getElementById('harassmentTrainingChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Nunca', 'Raramente', 'Ocasionalmente', 'Frequentemente', 'Muito Frequentemente'],
+                datasets: [{
+                    label: 'Frequência de Treinamento sobre Assédio',
+                    data: [24, 39, 0, 16, 22],
+                    backgroundColor: [PALETTE.red, PALETTE.orange, PALETTE.gray, PALETTE.blue, PALETTE.green],
+                }]
+            },
+             options: {
+                ...chartDefaultOptions,
+                plugins: { ...chartDefaultOptions.plugins, legend: { display: false } }
+            }
+        });
+
+    </script>
+</body>
+</html>
